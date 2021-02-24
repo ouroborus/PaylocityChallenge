@@ -1,0 +1,383 @@
+﻿@page
+@using PaylocityChallenge.Authentication;
+@model IndexModel
+@{
+    ViewData["Title"] = "Admin";
+    ViewData["ChecksPerYear"] = 26;
+    ViewData["SuperAdminId"] = ApplicationUser.SuperAdminId;
+}
+@section Styles {
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        main {
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+        input {
+            background-image: none !important;
+            padding-right: 0 !important;
+        }
+    </style>
+}
+<panel class="controls container view-other">
+    <div class="row justify-content-end">
+        <div class="col-auto"><button class="btn btn-primary btn-sm home">Home</button></div>
+    </div>
+</panel>
+<panel class="view container">
+
+    <div class="show-nothing row justify-content-center hide">
+        <div class="col-auto">You do not have any of the permissions needed to see something.</div>
+    </div>
+
+    <div class="show-users row justify-content-center hide">
+        <div class="col">
+            <div class="panel">
+                <div class="row controls align-items-center">
+                    <div class="col-auto mr-auto">
+                        <h2>Employees</h2>
+                    </div>
+                    <div class="col-auto"><button class="btn btn-primary btn-sm create-user add-edit">Add user</button></div>
+                </div>
+                <table class="users table table-sm table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Base salary</th>
+                            <th scope="col">Dependents</th>
+                            <th scope="col">Net benefits cost</th>
+                            <th scope="col">Net salary</th>
+                            <th scope="col">Paycheck</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="show-user row justify-content-center hide">
+        <div class="col">
+            <div class="panel">
+                <div class="row align-items-center">
+                    <div class="col-auto mr-auto">
+                        <h2>Dependents</h2>
+                    </div>
+                    <div class="col-auto add-edit"><button class="btn btn-primary btn-sm create-dependent">Add dependent</button></div>
+                </div>
+                <table class="dependents table table-sm table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Relationship</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Benefits Cost</th>
+                            <th scope="col">Modifier</th>
+                            <th scope="col">Net benefits</th>
+                            <th scope="col" class="add-edit">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="user">
+                            <td class="id"></td>
+                            <td class="type"></td>
+                            <td class="name-first"></td>
+                            <td class="name-last"></td>
+                            <td class="benefits-cost"></td>
+                            <td class="modifier"></td>
+                            <td class="net-cost"></td>
+                            <td class="add-edit"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>Estimates</h2>
+                <table class="estimate table table-sm table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Base salary</th>
+                            <th scope="col">Net benefits cost</th>
+                            <th scope="col">Net salary</th>
+                            <th scope="col">Net paycheck</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="user">
+                            <td class="salary-base"></td>
+                            <td class="benefits-net"></td>
+                            <td class="salary-net"></td>
+                            <td class="paycheck-net"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="edit-user row justify-content-center hide">
+        <div class="col">
+            <div class="panel">
+                <div class="row align-items-center">
+                    <div class="col-auto mr-auto">
+                        <h2>Edit user</h2>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="edit-user-user-id" class="col-sm-2 col-form-label">Id</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext user-id" id="edit-user-user-id" required>
+                    </div>
+                </div>
+                <div class="form-group row d-none">
+                    <label for="edit-user-email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext email" id="edit-user-email" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-user-name-first" class="col-sm-2 col-form-label">First name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-first" id="edit-user-name-first" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-user-name-last" class="col-sm-2 col-form-label">Last name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-last" id="edit-user-name-last" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-user-salary-base" class="col-sm-2 col-form-label">Base salary ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control salary-base" id="edit-user-salary-base" min="0" pattern="[1-9]\d*(\.\d*)?|0\.\d*|\.\d+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-user-benefits-cost" class="col-sm-2 col-form-label">Benefits cost (self) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control benefits-cost" id="edit-user-benefits-cost" min="0" pattern="[1-9]\d*(\.\d*)?|0\.\d*|\.\d+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-user-modifier" class="col-sm-2 col-form-label">Modifier (self) (&pm;%)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control modifier" id="edit-user-modifier" pattern="((-(([1-9]\d?)?|100))|\+?[1-9]\d*)(\.\d*)?|[-+]?(0\.\d*|\.\d+)">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-benefits-net" class="col-sm-2 col-form-label">Benefits net (self) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext benefits-net" id="create-user-benefits-net">
+                    </div>
+                </div>
+                <div class="form-group row justify-content-end">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary btn-sm edit-user-submit">Update user</button>
+                        <button type="button" class="btn btn-primary btn-sm view-user cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="create-user row justify-content-center hide">
+        <div class="col">
+            <div class="panel">
+                <div class="row align-items-center">
+                    <div class="col-auto mr-auto">
+                        <h2>Create user</h2>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="create-user-email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control email" id="create-user-email" required pattern="[^@@]+@@[^@@.]+\.[^@@]+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control password" id="create-user-password" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@@%&]).{8,}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-name-first" class="col-sm-2 col-form-label">First name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-first" id="create-user-name-first" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-name-last" class="col-sm-2 col-form-label">Last name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-last" id="create-user-name-last" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-salary-base" class="col-sm-2 col-form-label">Base salary ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control salary-base" id="create-user-salary-base" min="0" pattern="[1-9]\d*(\.\d*)?|0\.\d*|\.\d+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-benefits-cost" class="col-sm-2 col-form-label">Benefits cost (self) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control benefits-cost" id="create-user-benefits-cost" min="0" pattern="[1-9]\d*(\.\d*)?|0\.\d*|\.\d+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-modifier" class="col-sm-2 col-form-label">Modifier (self) (&pm;%)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control modifier" id="create-user-modifier" pattern="((-(([1-9]\d?)?|100))|\+?[1-9]\d*)(\.\d*)?|[-+]?(0\.\d*|\.\d+)">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-user-benefits-net" class="col-sm-2 col-form-label">Benefits net (self) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext benefits-net" id="create-user-benefits-net">
+                    </div>
+                </div>
+                <div class="form-group row justify-content-end">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary btn-sm create-user-submit">Create user</button>
+                        <button class="btn btn-primary btn-sm home cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="edit-dependent row justify-content-center hide">
+        <div class="col">
+            <div class="panel">
+                <div class="row align-items-center">
+                    <div class="col-auto mr-auto">
+                        <h2>Edit dependent</h2>
+                    </div>
+                    <div class="col-auto"><button class="btn btn-primary btn-sm view-user back">Return to user</button></div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="edit-dependent-user-id" class="col-sm-2 col-form-label">User Id</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext user-id" id="edit-dependent-user-id" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-dependent-dependent-id" class="col-sm-2 col-form-label">Dependent Id</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext dependent-id" id="edit-dependent-dependent-id" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-dependent-name-first" class="col-sm-2 col-form-label">First name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-first" id="edit-dependent-name-first" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-dependent-name-last" class="col-sm-2 col-form-label">Last name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-last" id="edit-dependent-name-last" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-dependent-benefits-cost" class="col-sm-2 col-form-label">Benefits cost (dependent) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control benefits-cost" id="edit-dependent-benefits-cost" min="0" pattern="[1-9]\d*(\.\d*)?|0\.\d*|\.\d+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-dependent-modifier" class="col-sm-2 col-form-label">Modifier (dependent) (&pm;%)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control modifier" id="edit-dependent-modifier" pattern="((-(([1-9]\d?)?|100))|\+?[1-9]\d*)(\.\d*)?|[-+]?(0\.\d*|\.\d+)">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="edit-dependent-benefits-net" class="col-sm-2 col-form-label">Benefits net (dependent) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext benefits-net" id="edit-dependent-benefits-net">
+                    </div>
+                </div>
+                <div class="form-group row justify-content-end">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary btn-sm edit-dependent-submit">Update dependent</button>
+                        <button type="button" class="btn btn-primary btn-sm view-user cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="create-dependent row justify-content-center hide">
+        <div class="col">
+            <div class="panel">
+                <div class="row align-items-center">
+                    <div class="col-auto mr-auto">
+                        <h2>Edit dependent</h2>
+                    </div>
+                    <div class="col-auto"><button class="btn btn-primary btn-sm view-user back">Return to user</button></div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="create-dependent-user-id" class="col-sm-2 col-form-label">User Id</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext user-id" id="create-dependent-user-id" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-dependent-name-first" class="col-sm-2 col-form-label">First name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-first" id="create-dependent-name-first" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-dependent-name-last" class="col-sm-2 col-form-label">Last name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control name-last" id="create-dependent-name-last" required pattern=".+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-dependent-benefits-cost" class="col-sm-2 col-form-label">Benefits cost (dependent) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control benefits-cost" id="create-dependent-benefits-cost" min="0" pattern="[1-9]\d*(\.\d*)?|0\.\d*|\.\d+">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-dependent-modifier" class="col-sm-2 col-form-label">Modifier (dependent) (&pm;%)</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control modifier" id="create-dependent-modifier" pattern="((-(([1-9]\d?)?|100))|\+?[1-9]\d*)(\.\d*)?|[-+]?(0\.\d*|\.\d+)">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="create-dependent-benefits-net" class="col-sm-2 col-form-label">Benefits net (dependent) ($)</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext benefits-net" id="create-dependent-benefits-net">
+                    </div>
+                </div>
+                <div class="form-group row justify-content-end">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary btn-sm create-dependent-submit">Create dependent</button>
+                        <button type="button" class="btn btn-primary btn-sm view-user cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</panel>
+@section Scripts {
+    <script>
+        window.app = window.app || {};
+        Object.assign(window.app, {
+            checksPerYear: @ViewData["ChecksPerYear"],
+            superAdminId: "@ViewData["SuperAdminId"]",
+        });
+    </script>
+    <script src="/js/index.js"></script>
+}

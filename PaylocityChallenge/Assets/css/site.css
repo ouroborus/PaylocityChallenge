@@ -1,0 +1,113 @@
+html, body {
+    height: 100vh;
+}
+body {
+    margin-top: var(--height-header);
+    margin-bottom: var(--height-footer);
+}
+body > header {
+    border-bottom: 1px solid rgba(0,0,0,0.5);
+}
+main {
+    min-height: 100%;
+}
+
+.empty {
+    display: none;
+}
+.empty:only-child {
+    display: initial;
+}
+
+.loading {
+    position: absolute;
+    left: 0;
+    top: var(--height-header);
+    right: 0;
+    bottom: var(--height-footer);
+    background: rgba(0,0,0,0.5);
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    grid-template-columns: 1fr auto 1fr;
+    z-index: 9999;
+}
+.loading > * {
+    grid-area: 2 / 2;
+}
+
+
+/*** Index ***/
+.panel td:first-child {
+    white-space: nowrap;
+}
+
+.panel table button + button {
+    margin-left: .25rem;
+}
+
+.panel th {
+    vertical-align: bottom;
+}
+.panel td {
+    vertical-align: middle;
+}
+
+.show-users td:nth-child(4),
+.show-users td:nth-child(n+6) {
+    text-align: right;
+}
+.show-users td:nth-child(5),
+.show-users td:nth-child(9) {
+    text-align: center;
+}
+
+.show-user .dependents td:nth-child(n+5) {
+    text-align: right;
+}
+.show-user .dependents td:nth-child(8) {
+    text-align: center;
+}
+.show-user .estimate td {
+    text-align: right;
+}
+
+body:not(.can-add-edit) .add-edit,
+body:not(.can-view-other) .view-other {
+    display: none;
+}
+
+
+/*** Login ***/
+main {
+    position: relative;
+}
+
+main > div {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto 2fr;
+    grid-template-columns: 1fr auto 1fr;
+}
+
+main > div > form {
+    grid-area: 2 / 2;
+}
+
+
+/* Bootstrap icons as svg backgrounds */
+.bi::before {
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+    width: 1rem;
+    height: 1rem;
+}
+.bi.bi-exclamation-triangle::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath d='M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z'/%3E%3Cpath d='M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z'/%3E%3C/svg%3E");
+}
+.bi.bi-exclamation-circle::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'%3E%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z'/%3E%3C/svg%3E ");
+}

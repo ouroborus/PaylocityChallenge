@@ -1,0 +1,59 @@
+﻿@page "/login"
+@model PaylocityChallenge.Pages.LoginModel
+@{
+  ViewData["Title"] = "Login";
+}
+@section Styles {
+}
+<div>
+    <form>
+        <div class="form-group">
+            <label for="username">Email address</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Email address" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        window.addEventListener('load', (event) => {
+            app.loading(false);
+        });
+
+        document.querySelector('main form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            app.loading(true);
+
+            const body = JSON.stringify(
+                Object.fromEntries(new FormData(event.target).entries())
+            );
+
+            @{/* TODO: handle fetch errors */}
+            const response = await fetch('/api/authenticate/login', {
+                method: 'POST',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            });
+            const data = await response.json();
+
+            if (!('token' in data)) {
+                console.log(data);
+                alert(`${data.status} - ${data.title}`);
+                app.loading(false);
+                return;
+            }
+            document.cookie = `Bearer=${data.token};expires=${new Date(data.expiration).toUTCString()};secure=true;path=/;domain=${location.hostname}`;
+
+            location.pathname = '/';
+        });
+    </script>
+}

@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    @RenderSection("Meta", required: false)
+
+    <environment exclude="">
+        <link rel="stylesheet" href="/bootstrap/bootstrap.min.css" />
+        @{/* TODO: asp-append-version doesn't work in this context */}
+        <link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
+    </environment>
+    <!-- styles that need to be available immediately -->
+    <style>
+        .hide {
+            display: none !important;
+        }
+    </style>
+    <style class="remove-on-load">
+        /* from bootstrap.min.css */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header class="fixed-top">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="/" title="Homepage"><img src="/logo.svg" style="height: 2rem;" alt="Logo" /></a>
+        </nav>
+    </header>
+
+    <div class="loading"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>
+
+    <main role="main" class="hide container">
+        @RenderBody()
+    </main>
+    <script>
+        window.addEventListener('load', (event) => {
+            Array.from(document.querySelectorAll('.remove-on-load')).forEach((element) => {
+                element.parentNode.removeChild(element);
+            });
+            document.querySelector('main').classList.remove('hide');
+        });
+    </script>
+
+    <footer class="footer fixed-bottom bg-dark container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <span class=" text-white-50">&copy; 2021 - jason.a.landon@gmail.com</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // These need to happen now and can't wait for script loading.
+        const root = document.querySelector(':root');
+        const header = document.querySelector('body > header');
+        const footer = document.querySelector('body > footer');
+        new ResizeObserver((entries) => {
+            root.style.setProperty('--height-header', entries[0].contentRect.height + 'px');
+        }).observe(header);
+        new ResizeObserver((entries) => {
+            root.style.setProperty('--height-footer', entries[0].contentRect.height + 'px');
+        }).observe(footer);
+    </script>
+<environment exclude="">
+    <script src="/jquery/jquery-3.5.1.min.js"></script>
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
+</environment>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
