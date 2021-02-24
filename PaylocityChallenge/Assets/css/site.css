@@ -2,8 +2,8 @@ html, body {
     height: 100vh;
 }
 body {
-    margin-top: var(--height-header);
-    margin-bottom: var(--height-footer);
+    padding-top: var(--height-header);
+    padding-bottom: var(--height-footer);
 }
 body > header {
     border-bottom: 1px solid rgba(0,0,0,0.5);
@@ -72,7 +72,11 @@ main {
 }
 
 body:not(.can-add-edit) .add-edit,
-body:not(.can-view-other) .view-other {
+body:not(.can-view-other) .view-other{
+    display: none;
+}
+.show-user.is-self .add-edit,
+.show-user.is-super-admin .add-edit {
     display: none;
 }
 

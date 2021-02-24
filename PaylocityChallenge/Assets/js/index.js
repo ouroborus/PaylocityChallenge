@@ -417,6 +417,9 @@ const showUser = async (button) => {
     const estimate = userPanel.querySelector('.estimate');
     const rowEstimate = estimate.querySelector('tbody > tr.user');
 
+    panelUser.classList[userId == app.superAdminId ? 'add' : 'remove']('is-super-admin');
+    panelUser.classList[userId == app.userId ? 'add' : 'remove']('is-self');
+
     const buttonCreateDependent = userPanel.querySelector('.create-dependent');
     buttonCreateDependent.dataset['userId'] = userId;
 
